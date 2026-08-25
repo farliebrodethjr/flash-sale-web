@@ -165,10 +165,10 @@ flowchart TD
     Throttler -->|Allowed Request| API
 
     API -->|5. Atomic Stock Decrement| Redis
-    Redis -->|Stock Reserved (201)| Worker
+    Redis -->|Stock Reserved 201| Worker
     Worker -->|6. Persist Order| DB
 
-    Redis -.->|Sold Out (400)| API
+    Redis -.->|Sold Out 400| API
     API -->|7. Response & Query Invalidation| Store
     Store -->|8. Live UI & Toast Update| UI
 ```
