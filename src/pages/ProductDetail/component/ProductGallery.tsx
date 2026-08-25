@@ -14,6 +14,9 @@ export default function ProductGallery({
   isOutOfStock,
   flashSale,
 }: ProductGallery) {
+  const FALLBACK_IMG =
+    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80";
+
   return (
     <div className="lg:col-span-6 flex flex-col">
       <Card className="relative rounded-2xl border border-neutral-200/90 shadow-sm p-6 sm:p-8 flex flex-col items-center justify-between min-h-105 sm:min-h-105">
@@ -59,8 +62,11 @@ export default function ProductGallery({
           {/* Main Product Image Display */}
           <div className="flex-1 w-full flex items-center justify-center py-6">
             <img
-              src={flashSale.product?.image_url}
+              src={flashSale.product?.image_url || FALLBACK_IMG}
               alt={flashSale.product?.name || "Flash Sale Product"}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
+              }}
               className="max-h-80 sm:max-h-90 w-auto max-w-full object-contain transition-transform duration-300 hover:scale-105"
             />
           </div>
