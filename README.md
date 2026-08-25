@@ -107,43 +107,62 @@ This project provides four core interactive user interfaces:
 
 ---
 
-## 💡 Design Choices & Trade-offs
+## 🏗️ Frontend Design Choices & Trade-offs
 
-### 1. TanStack React Query for Server Cache & Data Synchronization
+### 1. TanStack React Query — Server Data
 
-- **Design Choice**:
-  - Manages remote server data (flash sale catalogs, active sales, product details, order history) with automatic background caching, request deduplication, and immediate query invalidation upon checkout.
-- **Trade-off**:
-  - **Cache Freshness Window**: Requires explicit query invalidation to ensure UI inventory counts match backend stock under heavy concurrency.
+* **Design Choice:**
 
-### 2. Zustand for Lightweight Client UI State
+  * Used to manage API data such as products, flash sales, and orders.
+  * Provides caching, background updates, and query invalidation.
 
-- **Design Choice**:
-  - Eliminates Redux/Context boilerplate by managing client-only state (e.g. transaction history filter tab selection and local pagination) with minimal footprint.
-- **Trade-off**:
-  - **In-Memory Volatility**: Client UI state resets on full browser refresh unless connected to browser storage.
+* **Trade-off:**
 
-### 3. Centralized Axios HTTP Client with JWT Interceptors
+  * Cached data can become outdated, so queries need to be invalidated after important actions like checkout.
 
-- **Design Choice**:
-  - Request interceptors automatically inject the JWT Bearer token from browser cookies (`js-cookie`) into all outgoing API calls.
-- **Trade-off**:
-  - **Cookie Access**: Reading cookies adds minor client-side access time compared to in-memory state, but guarantees authentication persistence across page reloads.
+### 2. Zustand — Client UI State
 
-### 4. Tailwind CSS v4 + Shadcn UI Component Layer
+* **Design Choice:**
 
-- **Design Choice**:
-  - Powered by the `@tailwindcss/vite` engine for zero-runtime CSS overhead, paired with accessible, highly customizable Shadcn primitives.
-- **Trade-off**:
-  - **Codebase Component Ownership**: Component primitives live directly inside `src/components/ui/`, requiring manual file updates when upgrading components.
+  * Used for simple client-side state such as filters, selected tabs, and pagination.
+  * Keeps state management lightweight without the complexity of Redux.
 
-### 5. Client-Side Throttling & Graceful Rate-Limit Handling (HTTP 429)
+* **Trade-off:**
 
-- **Design Choice**:
-  - **Optimistic Button Locking**: Disables the checkout button immediately upon submission to prevent accidental duplicate clicks during high-traffic bursts.
-  - **Graceful Error Handling**: Intercepts `HTTP 429 Too Many Requests` from the backend `UserThrottlerGuard` and displays non-blocking toast notifications informing the user to wait briefly before retrying.
-- **Trade-off**:
-  - **User Delay**: Aggressive clickers who exceed rate limits are temporarily throttled until the cooling window resets.
+  * State is stored in memory and resets when the page is refreshed unless browser storage is used.
+
+### 3. Axios — API Client & Authentication
+
+* **Design Choice:**
+
+  * Uses a centralized Axios client for API requests.
+  * Automatically adds the JWT token to authenticated requests.
+
+* **Trade-off:**
+
+  * Authentication needs to be handled on every request, adding a small amount of client-side processing.
+
+### 4. Tailwind CSS + Shadcn UI — UI Layer
+
+* **Design Choice:**
+
+  * Tailwind CSS provides utility-based styling, while Shadcn UI provides reusable and accessible components.
+  * Keeps the UI consistent and easy to customize.
+
+* **Trade-off:**
+
+  * Shadcn components are owned by the project, so component updates need to be handled manually.
+
+### 5. Checkout Protection & Rate-Limit Handling
+
+* **Design Choice:**
+
+  * Disables the checkout button immediately after submission to prevent duplicate clicks.
+  * Handles `HTTP 429 Too Many Requests` responses with a user-friendly notification.
+
+* **Trade-off:**
+
+  * Users who send too many requests may need to wait before trying again.
 
 ---
 
