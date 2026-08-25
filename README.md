@@ -161,7 +161,7 @@ flowchart TD
     Store -->|3. HTTP Request| Axios
     Axios -->|4. POST /sale-product/:id/checkout| Throttler
 
-    Throttler -->|Exceeded Limit (429)| Axios
+    Throttler -->|Exceeded Limit 429| Axios
     Throttler -->|Allowed Request| API
 
     API -->|5. Atomic Stock Decrement| Redis
