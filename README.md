@@ -83,19 +83,24 @@ Testers can use any of the seeded accounts below to log in at [http://localhost:
 
 ## 🖥️ Frontend Views & Key Features
 
-This project provides three core interactive user interfaces:
+This project provides four core interactive user interfaces:
 
-### 1. Flash Sale Live Hub (Welcome Page)
+### 1. Authentication & Login Page
+
+- **Route:** [http://localhost:5173/login](http://localhost:5173/login)
+- User sign-in interface with field validation, password visibility toggle (eye icon), and secure JWT cookie handling with redirect to protected routes.
+
+### 2. Flash Sale Live Hub (Welcome Page)
 
 - **Route:** [http://localhost:5173/](http://localhost:5173/)
 - Browse active, upcoming, and ending sales campaigns with real-time status tabs and responsive product cards.
 
-### 2. Product Detail & Live Checkout
+### 3. Product Detail & Live Checkout
 
 - **Route:** [http://localhost:5173/deals/:id](http://localhost:5173/deals/:id)
 - High-precision countdown timers, remaining inventory indicators, and one-click rapid checkout optimized for burst traffic.
 
-### 3. Transaction & Order History
+### 4. Transaction & Order History
 
 - **Route:** [http://localhost:5173/history](http://localhost:5173/history)
 - Protected user order history dashboard with status filters (All, Completed, Pending, Failed) and itemized receipts.
